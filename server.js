@@ -13,6 +13,7 @@ let { upload, cloudinary } = require("./config/cloudinary");
 let app = express();
 app.use(express.json());
 app.use(cors({
+  path: "/socket.io/",
   origin: ["https://webchat-9c8d4.web.app", "http://localhost:5173", "http://localhost:5174"],
   credentials: true
 }));
@@ -183,4 +184,6 @@ io.on("connection", async (socket) => {
   });
 });
 
-httpServer.listen(3000, () => console.log("Server is alive at 3000"));
+// Change this line at the bottom of your server.js
+const PORT = process.env.PORT || 3000;
+httpServer.listen(PORT, () => console.log(`Server is alive at ${PORT}`));
