@@ -12,7 +12,10 @@ let { upload, cloudinary } = require("./config/cloudinary");
 
 let app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["https://webchat-9c8d4.web.app", "http://localhost:5173", "http://localhost:5174"],
+  credentials: true
+}));
 
 app.post("/upload", upload.single("file"), (req, res) => {
   let obj = {
@@ -46,10 +49,12 @@ app.delete("/delete/:id", (req, res) => {
 let httpServer = http.createServer(app);
 
 // ⭐ Configured dynamic CORS to explicitly allow all development origins/ports
+// ⭐ Configured dynamic CORS to explicitly allow your production Firebase domain + local testing ports
 let io = new Server(httpServer, { 
   cors: { 
     origin: (origin, callback) => {
       const allowedOrigins = [
+        "https://webchat-9c8d4.web.app", // Added your production Firebase link
         "http://localhost:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5173",
