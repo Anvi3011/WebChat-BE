@@ -13,8 +13,7 @@ let { upload, cloudinary } = require("./config/cloudinary");
 let app = express();
 app.use(express.json());
 app.use(cors({
-  path: "/socket.io/",
-  origin: ["https://webchat-9c8d4.web.app", "http://localhost:5173", "http://localhost:5174"],
+  origin: "*",
   credentials: true
 }));
 
@@ -54,13 +53,7 @@ let httpServer = http.createServer(app);
 let io = new Server(httpServer, { 
   cors: { 
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        "https://webchat-9c8d4.web.app", // Added your production Firebase link
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174"
-      ];
+      const allowedOrigins = "*";
       if (!origin || allowedOrigins.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         callback(null, true);
       } else {
