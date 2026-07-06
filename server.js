@@ -52,16 +52,11 @@ let httpServer = http.createServer(app);
 // ⭐ Configured dynamic CORS to explicitly allow your production Firebase domain + local testing ports
 let io = new Server(httpServer, { 
   cors: { 
-    origin: (origin, callback) => {
-      const allowedOrigins = "*";
-      if (!origin || allowedOrigins.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Blocked by CORS policy"));
-      }
-    },
+    origin: "*", // 👈 Absolute bypass to eliminate any hidden domain protocol blocks
+    methods: ["GET", "POST"],
     credentials: true
-  } 
+  },
+  allowEIO3: true // 👈 Backwards compatibility support toggle in case of minor version discrepancies
 });
 
 // Helper dictionary to map usernames to active socket IDs in memory for WebRTC signaling
